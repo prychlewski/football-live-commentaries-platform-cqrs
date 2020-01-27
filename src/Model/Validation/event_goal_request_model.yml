@@ -1,0 +1,7 @@
+App\Model\Request\EventGoalRequestModel:
+  properties:
+    teamId:
+      - NotBlank: ~
+      - Type: int
+      - Range:
+          min: 1
