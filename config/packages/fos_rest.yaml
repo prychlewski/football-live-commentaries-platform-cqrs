@@ -13,7 +13,7 @@ fos_rest:
 
   format_listener:
     rules:
-                                  - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
+      - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
 
 
   body_listener:
@@ -24,7 +24,7 @@ fos_rest:
     exception_controller: 'fos_rest.exception.twig_controller:showAction'
     codes:
       App\Exception\ModelValidationException: HTTP_BAD_REQUEST
-      App\Exception\TeamDoesNotTakePartInEventException: HTTP_BAD_REQUEST
-      App\Exception\EventNotFoundException: HTTP_NOT_FOUND
-      App\Exception\EventCommentNotFoundException: HTTP_NOT_FOUND
+      App\Exception\TeamDoesNotTakePartInMatchException: HTTP_BAD_REQUEST
+      App\Exception\FootballMatchNotFoundException: HTTP_NOT_FOUND
+      App\Exception\CommentNotFoundException: HTTP_NOT_FOUND
       App\Exception\TeamNotFoundException: HTTP_NOT_FOUND

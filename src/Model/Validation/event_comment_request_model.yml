@@ -1,5 +1,0 @@
-App\Model\Request\EventCommentRequestModel:
-  properties:
-    content:
-      - NotBlank: ~
-      - Type: string

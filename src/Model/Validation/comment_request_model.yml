@@ -1,0 +1,5 @@
+App\Model\Request\CommentRequestModel:
+  properties:
+    content:
+      - NotBlank: ~
+      - Type: string

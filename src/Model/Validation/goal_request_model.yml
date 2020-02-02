@@ -1,0 +1,7 @@
+App\Model\Request\GoalRequestModel:
+  properties:
+    teamId:
+      - NotBlank: ~
+      - Type: int
+      - Range:
+          min: 1

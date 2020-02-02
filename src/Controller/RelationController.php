@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Command\EventComment\CreateEventCommentCommand;
-use App\Command\EventComment\DeleteEventCommentCommand;
-use App\Command\EventComment\UpdateEventCommentCommand;
-use App\Model\Request\EventCommentRequestModel;
-use App\Query\EventComment\EventCommentQuery;
+use App\Command\Comment\CreateCommentCommand;
+use App\Command\Comment\DeleteCommentCommand;
+use App\Command\Comment\UpdateCommentCommand;
+use App\Model\Request\CommentRequestModel;
+use App\Query\Comment\CommentQuery;
 use FOS\RestBundle\Controller\Annotations\Route;
 use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -27,71 +27,71 @@ class RelationController extends BaseController
     }
 
     /**
-     * @Route("/relation/event/{eventId}", name="event_comment_add",  methods={"POST"})
-     * @ParamConverter("eventCommentRequestModel", converter="fos_rest.request_body")
+     * @Route("/relation/football-match/{footballMatchId}", name="comment_add",  methods={"POST"})
+     * @ParamConverter("commentRequestModel", converter="fos_rest.request_body")
      *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function addAction(
-        int $eventId,
-        EventCommentQuery $eventCommentQuery,
-        EventCommentRequestModel $eventCommentRequestModel,
+        int $footballMatchId,
+        CommentQuery $commentQuery,
+        CommentRequestModel $commentRequestModel,
         ConstraintViolationListInterface $validationErrors
     ) {
         $this->handleErrors($validationErrors);
 
-        $createEventCommentCommand = new CreateEventCommentCommand($eventId, $eventCommentRequestModel);
-        $this->commandBus->handle($createEventCommentCommand);
+        $createCommentCommand = new CreateCommentCommand($footballMatchId, $commentRequestModel);
+        $this->commandBus->handle($createCommentCommand);
 
-        $eventComment = $eventCommentQuery->getLastByEventId($eventId);
+        $commentView = $commentQuery->getLastByFootballMatchId($footballMatchId);
 
-        return $this->view($eventComment);
+        return $this->view($commentView);
     }
 
     /**
-     * @Route("/relation/{commentId}", name="event_comment_edit",  methods={"PATCH"})
-     * @ParamConverter("eventCommentRequestModel", converter="fos_rest.request_body")
+     * @Route("/relation/{commentId}", name="comment_edit",  methods={"PATCH"})
+     * @ParamConverter("commentRequestModel", converter="fos_rest.request_body")
      *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function editAction(
         int $commentId,
-        EventCommentQuery $eventCommentQuery,
-        EventCommentRequestModel $eventCommentRequestModel,
+        CommentQuery $commentQuery,
+        CommentRequestModel $commentRequestModel,
         ConstraintViolationListInterface $validationErrors
     ) {
         $this->handleErrors($validationErrors);
 
-        $updateEventCommentCommand = new UpdateEventCommentCommand($commentId, $eventCommentRequestModel);
-        $this->commandBus->handle($updateEventCommentCommand);
+        $updateCommentCommand = new UpdateCommentCommand($commentId, $commentRequestModel);
+        $this->commandBus->handle($updateCommentCommand);
 
-        $eventComment = $eventCommentQuery->getById($commentId);
+        $commentView = $commentQuery->getById($commentId);
 
-        return $this->view($eventComment);
+        return $this->view($commentView);
     }
 
     /**
-     * @Route("/relation/{commentId}", name="event_comment_delete",  methods={"DELETE"})
+     * @Route("/relation/{commentId}", name="comment_delete",  methods={"DELETE"})
      *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAction(int $commentId)
     {
-        $deleteEventCommentCommand = new DeleteEventCommentCommand($commentId);
-        $this->commandBus->handle($deleteEventCommentCommand);
+        $deleteCommentCommand = new DeleteCommentCommand($commentId);
+        $this->commandBus->handle($deleteCommentCommand);
 
         return $this->view(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
-     * @Route("/relation/event/{eventId}/complete", name="event_comments_view",  methods={"GET"})
+     * @Route("/relation/football-match/{footballMatchId}/complete", name="comments_view",  methods={"GET"})
      *
      * @Security("is_granted('ROLE_USER')")
      */
-    public function viewAction(int $eventId, EventCommentQuery $eventCommentQuery)
+    public function viewAction(int $footballMatchId, CommentQuery $commentQuery)
     {
-        $eventComments = $eventCommentQuery->getCommentsByEventId($eventId);
+        $comments = $commentQuery->getCommentsByFootballMatchId($footballMatchId);
 
-        return $this->view($eventComments);
+        return $this->view($comments);
     }
 }

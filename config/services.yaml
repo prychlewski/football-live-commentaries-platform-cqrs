@@ -40,10 +40,10 @@ services:
         factory: [App\Query\Team\TeamQueryFactory, createQuery]
         arguments: ['dbal']
 
-    App\Query\Event\EventQuery:
-        factory: [App\Query\Event\EventQueryFactory, createQuery]
+    App\Query\FootballMatch\FootballMatchQuery:
+        factory: [App\Query\FootballMatch\FootballMatchQueryFactory, createQuery]
         arguments: ['dbal']
 
-    App\Query\EventComment\EventCommentQuery:
-        factory: [App\Query\EventComment\EventCommentQueryFactory, createQuery]
+    App\Query\Comment\CommentQuery:
+        factory: [App\Query\Comment\CommentQueryFactory, createQuery]
         arguments: ['dbal']
